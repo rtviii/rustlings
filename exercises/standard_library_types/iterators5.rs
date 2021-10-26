@@ -11,8 +11,6 @@
 //
 // Make the code compile and the tests pass.
 
-// I AM NOT DONE
-
 use std::collections::HashMap;
 
 #[derive(Clone, Copy, PartialEq, Eq)]
@@ -22,7 +20,11 @@ enum Progress {
     Complete,
 }
 
-fn count_for(map: &HashMap<String, Progress>, value: Progress) -> usize {
+fn count_for(
+    map  : &HashMap<String, Progress>,
+    value: Progress) -> usize
+
+    {
     let mut count = 0;
     for val in map.values() {
         if val == &value {
@@ -35,6 +37,10 @@ fn count_for(map: &HashMap<String, Progress>, value: Progress) -> usize {
 fn count_iterator(map: &HashMap<String, Progress>, value: Progress) -> usize {
     // map is a hashmap with String keys and Progress values.
     // map = { "variables1": Complete, "from_str": None, ... }
+
+    map.iter().filter(|&(_x, val)| val == &value).count()
+        
+    
 }
 
 fn count_collection_for(collection: &[HashMap<String, Progress>], value: Progress) -> usize {
@@ -50,9 +56,11 @@ fn count_collection_for(collection: &[HashMap<String, Progress>], value: Progres
 }
 
 fn count_collection_iterator(collection: &[HashMap<String, Progress>], value: Progress) -> usize {
-    // collection is a slice of hashmaps.
-    // collection = [{ "variables1": Complete, "from_str": None, ... },
-    //     { "variables2": Complete, ... }, ... ]
+    let mut cnt = 0;
+    for map in collection{
+        cnt += count_iterator(map, value);
+    }
+    cnt
 }
 
 #[cfg(test)]
@@ -69,7 +77,7 @@ mod tests {
     fn count_equals_for() {
         let map = get_map();
         assert_eq!(
-            count_for(&map, Progress::Complete),
+            count_for     (&map, Progress::Complete),
             count_iterator(&map, Progress::Complete)
         );
     }
